@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import deepFind from '../src/index.js';
+import { deepFind } from '../src/index.js';
 
 describe('DeepFind test', function () {
   it('should find in first level', () => {
@@ -13,7 +13,7 @@ describe('DeepFind test', function () {
   it('should find in second level', () => {
     const o = {
       b: {
-        a: 'a'
+        a: 'ba'
       }
     };
 
@@ -24,7 +24,7 @@ describe('DeepFind test', function () {
     const o = {
       c: {
         b: {
-          a: 'a'
+          a: 'cba'
         }
       }
     };
@@ -46,7 +46,7 @@ describe('DeepFind test', function () {
     expect(deepFind(o, 'a')).to.not.equal(o.c.b.a);
   });
 
-  it('should throw', () => {
+  it('should throw No Such Property', () => {
     const o = {
       c: {
         b: {}
@@ -54,5 +54,14 @@ describe('DeepFind test', function () {
     };
 
     expect(() => deepFind(o, 'a')).to.throw('No such property: a');
+    expect(() => deepFind({}, 'a')).to.throw('No such property: a');
+    expect(() => deepFind([], 'a')).to.throw('No such property: a');
+  });
+
+  it('should throw TypeError', () => {
+    expect(() => deepFind(null, 'a')).to.throw('Expected object');
+    expect(() => deepFind(undefined, 'a')).to.throw('Expected object');
+    expect(() => deepFind('a', 'a')).to.throw('Expected object');
+    expect(() => deepFind(1, 'a')).to.throw('Expected object');
   });
 });

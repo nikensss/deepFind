@@ -35,11 +35,20 @@ describe('DeepFindAll test', function () {
     expect(deepFindAll(o, 'a')).to.deep.equal([o.a, o.c.a, o.c.b.a]);
   });
 
-  it('should find throw exception', () => {
+  it('should throw', () => {
     const o = {
       c: {}
     };
 
     expect(() => deepFindAll(o, 'a')).to.throw('No such property: a');
+    expect(() => deepFindAll({}, 'a')).to.throw('No such property: a');
+    expect(() => deepFindAll([], 'a')).to.throw('No such property: a');
+  });
+
+  it('should throw TypeError', () => {
+    expect(() => deepFindAll(null, 'a')).to.throw('Expected object');
+    expect(() => deepFindAll(undefined, 'a')).to.throw('Expected object');
+    expect(() => deepFindAll('a', 'a')).to.throw('Expected object');
+    expect(() => deepFindAll(1, 'a')).to.throw('Expected object');
   });
 });

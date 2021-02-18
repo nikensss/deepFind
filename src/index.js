@@ -1,8 +1,6 @@
-export default function deepFind(object, property) {
-  const invalidTypes = ['number', 'boolean', 'string', 'function'];
-
-  if (invalidTypes.includes(typeof object)) {
-    throw new Error(`Received object is of invalid type: ${typeof object}`);
+export function deepFind(object, property) {
+  if (object === null || typeof object !== 'object') {
+    throw new TypeError(`Expected object. Received ${typeof object}`);
   }
 
   const keys = Object.keys(object);
@@ -12,7 +10,7 @@ export default function deepFind(object, property) {
   }
 
   for (const key of keys) {
-    if (invalidTypes.includes(typeof object[key])) {
+    if (object === null || typeof object[key] !== 'object') {
       continue;
     }
 
@@ -25,32 +23,25 @@ export default function deepFind(object, property) {
 }
 
 export function deepFindAll(object, property) {
-  const invalidTypes = ['number', 'boolean', 'string', 'function'];
-
-  if (invalidTypes.includes(typeof object)) {
-    throw new Error(`Received object is of invalid type: ${typeof object}`);
+  if (object === null || typeof object !== 'object') {
+    throw new TypeError(`Expected object. Received ${typeof object}`);
   }
 
   const result = [];
-  const keys = Object.keys(object);
-
-  if (keys.includes(property)) {
+  if (property in object) {
     result.push(object[property]);
   }
 
+  const keys = Object.keys(object);
   for (const key of keys) {
-    if (invalidTypes.includes(typeof object[key])) {
-      continue;
-    }
+    if (object === null || typeof object[key] !== 'object') continue;
 
     try {
       result.push(...deepFindAll(object[key], property));
     } catch (ignored) {}
   }
 
-  if (result.length === 0) {
-    throw new Error(`No such property: ${property}`);
-  }
+  if (result.length === 0) throw new Error(`No such property: ${property}`);
 
   return result;
 }
