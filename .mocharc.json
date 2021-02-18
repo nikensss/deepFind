@@ -1,0 +1,7 @@
+{
+  "diff": true,
+  "extension": ["js"],
+  "package": "./package.json",
+  "recursive": true,
+  "spec": ["test/**/*.spec.js"]
+}
