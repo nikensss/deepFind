@@ -64,4 +64,25 @@ describe('DeepFind test', function () {
     expect(() => deepFind('a', 'a')).to.throw('Expected object');
     expect(() => deepFind(1, 'a')).to.throw('Expected object');
   });
+
+  it('should not find because of depth limit', () => {
+    let o = {
+      b: {
+        a: 'ba'
+      }
+    };
+
+    expect(() => deepFind(o, 'a', 0)).to.throw('No such property: a');
+    expect(() => deepFind(o, 'a', 1)).to.not.throw('No such property: a');
+
+    o = {
+      c: {
+        b: {
+          a: 'cba'
+        }
+      }
+    };
+    expect(() => deepFind(o, 'a', 1)).to.throw('No such property: a');
+    expect(() => deepFind(o, 'a', 2)).to.not.throw('No such property: a');
+  });
 });

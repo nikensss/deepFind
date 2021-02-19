@@ -1,21 +1,18 @@
-export function deepFind(object, property) {
+export function deepFind(object, property, depth = Number.POSITIVE_INFINITY) {
   if (object === null || typeof object !== 'object') {
     throw new TypeError(`Expected object. Received ${typeof object}`);
   }
 
+  if (property in object) return object[property];
+
+  if (depth <= 0) throw new Error(`No such property: ${property}`);
+
   const keys = Object.keys(object);
-
-  if (keys.includes(property)) {
-    return object[property];
-  }
-
   for (const key of keys) {
-    if (object === null || typeof object[key] !== 'object') {
-      continue;
-    }
+    if (object === null || typeof object[key] !== 'object') continue;
 
     try {
-      return deepFind(object[key], property);
+      return deepFind(object[key], property, depth - 1);
     } catch (ignored) {}
   }
 
@@ -28,9 +25,8 @@ export function deepFindAll(object, property) {
   }
 
   const result = [];
-  if (property in object) {
-    result.push(object[property]);
-  }
+
+  if (property in object) result.push(object[property]);
 
   const keys = Object.keys(object);
   for (const key of keys) {
