@@ -27,12 +27,34 @@ describe('DeepFindAll test', function () {
       c: {
         a: 'ca',
         b: {
-          a: 'cba'
+          a: 'cba',
+          t: {
+            s: null
+          }
         }
       }
     };
 
     expect(deepFindAll(o, 'a')).to.deep.equal([o.a, o.c.a, o.c.b.a]);
+  });
+
+  it('should find limited amount because of depth', () => {
+    const o = {
+      a: 'a',
+      c: {
+        a: 'ca',
+        b: {
+          a: 'cba',
+          t: {
+            s: null
+          }
+        }
+      }
+    };
+
+    expect(deepFindAll(o, 'a', 1)).to.deep.equal([o.a, o.c.a]);
+    expect(deepFindAll(o, 'a', 2)).to.deep.equal([o.a, o.c.a, o.c.b.a]);
+    expect(deepFindAll(o, 'a', 3)).to.deep.equal([o.a, o.c.a, o.c.b.a]);
   });
 
   it('should throw', () => {
