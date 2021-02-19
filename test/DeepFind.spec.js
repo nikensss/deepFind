@@ -67,11 +67,16 @@ describe('DeepFind test', function () {
 
   it('should not find because of depth limit', () => {
     let o = {
+      a: 'a'
+    };
+    expect(() => deepFind(o, 'a', -1)).to.throw('No such property: a');
+    expect(() => deepFind(o, 'a', 0)).to.not.throw('No such property: a');
+
+    o = {
       b: {
         a: 'ba'
       }
     };
-
     expect(() => deepFind(o, 'a', 0)).to.throw('No such property: a');
     expect(() => deepFind(o, 'a', 1)).to.not.throw('No such property: a');
 

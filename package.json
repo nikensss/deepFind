@@ -40,7 +40,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run pretty && npm run lint && git add --all"
+      "pre-commit": "npm run pretty && npm run lint && npm run mocha && git add --all"
     }
   }
 }
