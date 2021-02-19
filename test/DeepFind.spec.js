@@ -46,16 +46,16 @@ describe('DeepFind test', function () {
     expect(deepFind(o, 'a')).to.not.equal(o.c.b.a);
   });
 
-  it('should throw No Such Property', () => {
+  it('should not throw', () => {
     const o = {
       c: {
         b: {}
       }
     };
 
-    expect(() => deepFind(o, 'a')).to.throw('No such property: a');
-    expect(() => deepFind({}, 'a')).to.throw('No such property: a');
-    expect(() => deepFind([], 'a')).to.throw('No such property: a');
+    expect(() => deepFind(o, 'a')).to.not.throw('No such property: a');
+    expect(() => deepFind({}, 'a')).to.not.throw('No such property: a');
+    expect(() => deepFind([], 'a')).to.not.throw('No such property: a');
   });
 
   it('should throw TypeError', () => {
@@ -69,16 +69,17 @@ describe('DeepFind test', function () {
     let o = {
       a: 'a'
     };
-    expect(() => deepFind(o, 'a', -1)).to.throw('No such property: a');
-    expect(() => deepFind(o, 'a', 0)).to.not.throw('No such property: a');
+
+    expect(deepFind(o, 'a', -1)).to.be.undefined;
+    expect(deepFind(o, 'a', 0)).to.equal(o.a);
 
     o = {
       b: {
         a: 'ba'
       }
     };
-    expect(() => deepFind(o, 'a', 0)).to.throw('No such property: a');
-    expect(() => deepFind(o, 'a', 1)).to.not.throw('No such property: a');
+    expect(deepFind(o, 'a', 0)).to.be.undefined;
+    expect(deepFind(o, 'a', 1)).to.equal(o.b.a);
 
     o = {
       c: {
@@ -87,7 +88,7 @@ describe('DeepFind test', function () {
         }
       }
     };
-    expect(() => deepFind(o, 'a', 1)).to.throw('No such property: a');
-    expect(() => deepFind(o, 'a', 2)).to.not.throw('No such property: a');
+    expect(deepFind(o, 'a', 1)).to.be.undefined;
+    expect(deepFind(o, 'a', 2)).to.deep.equal(o.c.b.a);
   });
 });
